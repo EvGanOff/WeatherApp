@@ -1,0 +1,12 @@
+{
+  "data" : [
+    {
+      "filename" : "weather_icon_1024x1024.zip",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
