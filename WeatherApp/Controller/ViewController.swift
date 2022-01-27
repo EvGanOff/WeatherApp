@@ -9,32 +9,39 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    var backgroundImageView: UIImageView = {
-        var imageBackground = UIImageView()
+    private lazy var stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.backgroundColor = .clear
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+
+   private lazy var backgroundImageView: UIImageView = {
+        let imageBackground = UIImageView()
         imageBackground.clipsToBounds = true
         imageBackground.image = .init(named: "Background")
         imageBackground.translatesAutoresizingMaskIntoConstraints = false
         return imageBackground
     }()
 
-    var weatherIconImageView: UIImageView = {
+    private lazy var weatherIconImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.clipsToBounds = true
         imageView.layer.masksToBounds = true
-        imageView.image = .init(systemName: "cloud.rain.fill")
+        imageView.image = UIImage(systemName: "cloud.rain.fill")
         imageView.tintColor = .white
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
 
-    var cityLable: UILabel = {
+    private lazy var cityLable: UILabel = {
         let lable = UILabel()
         lable.translatesAutoresizingMaskIntoConstraints = false
         lable.numberOfLines = 1
         return lable
     }()
 
-    var temperatureLable: UILabel = {
+    private lazy var temperatureLable: UILabel = {
         let lable = UILabel()
         lable.numberOfLines = 1
         lable.textColor = .white
@@ -44,7 +51,7 @@ class ViewController: UIViewController {
         return lable
     }()
 
-    var feelsTemperatureLable: UILabel = {
+    private lazy var feelsTemperatureLable: UILabel = {
         let lable = UILabel()
         lable.numberOfLines = 1
         lable.text = "Fill's like 23C"
@@ -54,65 +61,98 @@ class ViewController: UIViewController {
         return lable
     }()
 
-    var searchButton: UIButton = {
+    private lazy var searchButton: UIButton = {
         let button = UIButton()
         let image = UIImage(systemName: "magnifyingglass.circle")
         button.setImage(image, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.tintColor = .white
+        button.addTarget(self, action: #selector(tapButton), for: .touchUpInside)
         button.clipsToBounds = true
         return button
     }()
+
+
 
     // MARK: - SetupHierarchy
 
     func setupHierarchy() {
         view.addSubview(backgroundImageView)
-        view.addSubview(weatherIconImageView)
-        view.addSubview(cityLable)
-        view.addSubview(temperatureLable)
-        view.addSubview(feelsTemperatureLable)
-        view.addSubview(searchButton)
+        view.addSubview(stackView)
+        stackView.addSubview(weatherIconImageView)
+        stackView.addSubview(cityLable)
+        stackView.addSubview(temperatureLable)
+        stackView.addSubview(feelsTemperatureLable)
+        stackView.addSubview(searchButton)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
         setupHierarchy()
         setupLayout()
     }
 
+    @objc
+    func tapButton() {
+        self.presentSearchAlertController(withTitle: "Enter city name", massege: nil, style: .alert)
+    }
+
 }
+
 
 // MARK: - SetupLayout
 
 extension ViewController {
+
     func setupLayout() {
         NSLayoutConstraint.activate([
-            backgroundImageView.widthAnchor.constraint(equalTo: view.widthAnchor),
-            backgroundImageView.heightAnchor.constraint(equalTo: view.heightAnchor),
+            backgroundImageView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: 0),
+            backgroundImageView.heightAnchor.constraint(equalTo: view.heightAnchor, constant: 0),
 
-            weatherIconImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0),
-            weatherIconImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -250),
-            weatherIconImageView.heightAnchor.constraint(equalToConstant: 200),
-            weatherIconImageView.widthAnchor.constraint(equalToConstant: 200),
+            stackView.topAnchor.constraint(equalTo: backgroundImageView.topAnchor, constant: 8),
+            stackView.leadingAnchor.constraint(equalTo: backgroundImageView.leadingAnchor, constant: 8),
+            stackView.trailingAnchor.constraint(equalTo: backgroundImageView.trailingAnchor, constant: -8),
+            stackView.bottomAnchor.constraint(equalTo: backgroundImageView.bottomAnchor, constant: -8),
 
-            temperatureLable.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 160),
-            temperatureLable.centerYAnchor.constraint(equalTo: view.centerYAnchor,constant: -100),
-            temperatureLable.heightAnchor.constraint(equalTo: view.heightAnchor),
-            temperatureLable.widthAnchor.constraint(equalTo: view.widthAnchor),
+            weatherIconImageView.topAnchor.constraint(equalTo: stackView.topAnchor, constant: 100),
+            weatherIconImageView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 150),
 
-            feelsTemperatureLable.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 180),
-            feelsTemperatureLable.centerYAnchor.constraint(equalTo: view.centerYAnchor,constant: -60),
-            feelsTemperatureLable.heightAnchor.constraint(equalTo: view.heightAnchor),
-            feelsTemperatureLable.widthAnchor.constraint(equalTo: view.widthAnchor),
 
-            searchButton.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 150),
-            searchButton.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 350),
-            searchButton.heightAnchor.constraint(equalToConstant: 100),
-            searchButton.widthAnchor.constraint(equalToConstant: 100)
+            temperatureLable.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 150),
+            temperatureLable.heightAnchor.constraint(equalTo: stackView.heightAnchor, constant: -200),
+            temperatureLable.widthAnchor.constraint(equalTo: stackView.widthAnchor),
+
+            feelsTemperatureLable.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 150),
+            feelsTemperatureLable.heightAnchor.constraint(equalTo: stackView.heightAnchor, constant: -120),
+            feelsTemperatureLable.widthAnchor.constraint(equalTo: stackView.widthAnchor),
+
+            searchButton.centerXAnchor.constraint(equalTo: stackView.centerXAnchor, constant: 100),
+            searchButton.centerYAnchor.constraint(equalTo: stackView.centerYAnchor, constant: 250)
+
 
         ])
+    }
+}
+
+extension ViewController {
+
+    func presentSearchAlertController(withTitle title: String?, massege: String?, style: UIAlertController.Style) {
+        let alert = UIAlertController(title: title, message: massege, preferredStyle: style)
+        alert.addTextField { textFild in
+            let cities = ["Moscow", "New York", "Kiev", "Viena", "Stambul", "Moscow"]
+            textFild.placeholder = cities.randomElement()
+            let search = UIAlertAction(title: "Search", style: .default) { action in
+                let textField = alert.textFields?.first
+                guard let cityName = textField?.text else { return }
+                if cityName != "" {
+                    print("search info for the \(cityName)")
+                }
+            }
+            let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            alert.addAction(search)
+            alert.addAction(cancel)
+            self.present(alert, animated: true, completion: nil)
+        }
     }
 
 }
