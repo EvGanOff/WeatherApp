@@ -18,6 +18,7 @@
 		5EAC005A278A358100EBE459 /* ModelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EAC0059278A358100EBE459 /* ModelData.swift */; };
 		5EDDE47127A35B7200328820 /* NetworkWeatherManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EDDE47027A35B7200328820 /* NetworkWeatherManager.swift */; };
 		5EDDE47427A35D7A00328820 /* Constans.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EDDE47327A35D7A00328820 /* Constans.swift */; };
+		5EDDE47627A5D5BC00328820 /* CurrentWeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EDDE47527A5D5BC00328820 /* CurrentWeather.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 		5EAC0059278A358100EBE459 /* ModelData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelData.swift; sourceTree = "<group>"; };
 		5EDDE47027A35B7200328820 /* NetworkWeatherManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkWeatherManager.swift; sourceTree = "<group>"; };
 		5EDDE47327A35D7A00328820 /* Constans.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constans.swift; sourceTree = "<group>"; };
+		5EDDE47527A5D5BC00328820 /* CurrentWeather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeather.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +118,7 @@
 				5EAC0055278A2A2600EBE459 /* DataSource.swift */,
 				5EAC0059278A358100EBE459 /* ModelData.swift */,
 				5EDDE47027A35B7200328820 /* NetworkWeatherManager.swift */,
+				5EDDE47527A5D5BC00328820 /* CurrentWeather.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -284,6 +287,7 @@
 				5EAC0022278A27B600EBE459 /* AppDelegate.swift in Sources */,
 				5EDDE47427A35D7A00328820 /* Constans.swift in Sources */,
 				5EDDE47127A35B7200328820 /* NetworkWeatherManager.swift in Sources */,
+				5EDDE47627A5D5BC00328820 /* CurrentWeather.swift in Sources */,
 				5EAC0058278A352000EBE459 /* View.swift in Sources */,
 				5EAC005A278A358100EBE459 /* ModelData.swift in Sources */,
 				5EAC0056278A2A2600EBE459 /* DataSource.swift in Sources */,
