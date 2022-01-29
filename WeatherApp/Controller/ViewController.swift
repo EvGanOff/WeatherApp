@@ -9,6 +9,8 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    // MARK: - Views
+
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.backgroundColor = .clear
@@ -72,7 +74,7 @@ class ViewController: UIViewController {
         return button
     }()
 
-
+   private lazy var networkWeatherManager = NetworkWeatherManager()
 
     // MARK: - SetupHierarchy
 
@@ -90,11 +92,14 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         setupHierarchy()
         setupLayout()
+        networkWeatherManager.fetchURL(forCity: "London")
     }
 
     @objc
     func tapButton() {
-        self.presentSearchAlertController(withTitle: "Enter city name", massege: nil, style: .alert)
+        self.presentSearchAlertController(withTitle: "Enter city name", massege: nil, style: .alert) { cityName in
+            self.networkWeatherManager.fetchURL(forCity: cityName)
+        }
     }
 
 }
@@ -136,7 +141,7 @@ extension ViewController {
 
 extension ViewController {
 
-    func presentSearchAlertController(withTitle title: String?, massege: String?, style: UIAlertController.Style) {
+    func presentSearchAlertController(withTitle title: String?, massege: String?, style: UIAlertController.Style, complitionHeandler: @escaping (String) -> Void) {
         let alert = UIAlertController(title: title, message: massege, preferredStyle: style)
         alert.addTextField { textFild in
             let cities = ["Moscow", "New York", "Kiev", "Viena", "Stambul", "Moscow"]
@@ -145,7 +150,8 @@ extension ViewController {
                 let textField = alert.textFields?.first
                 guard let cityName = textField?.text else { return }
                 if cityName != "" {
-                    print("search info for the \(cityName)")
+                    let city = cityName.split(separator: " ").joined(separator: "%20")
+                    complitionHeandler(city)
                 }
             }
             let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
@@ -154,5 +160,4 @@ extension ViewController {
             self.present(alert, animated: true, completion: nil)
         }
     }
-
 }
