@@ -40,6 +40,7 @@ class ViewController: UIViewController {
         let lable = UILabel()
         lable.translatesAutoresizingMaskIntoConstraints = false
         lable.numberOfLines = 1
+        lable.textColor = .white
         return lable
     }()
 
@@ -48,7 +49,7 @@ class ViewController: UIViewController {
         lable.numberOfLines = 1
         lable.textColor = .white
         lable.text = "25C"
-        lable.font = .systemFont(ofSize: 60)
+        lable.font = .systemFont(ofSize: 60) 
         lable.translatesAutoresizingMaskIntoConstraints = false
         return lable
     }()
@@ -56,7 +57,6 @@ class ViewController: UIViewController {
     private lazy var feelsTemperatureLable: UILabel = {
         let lable = UILabel()
         lable.numberOfLines = 1
-        lable.text = "Fill's like 23C"
         lable.textColor = .white
         lable.font = .systemFont(ofSize: 15)
         lable.translatesAutoresizingMaskIntoConstraints = false
@@ -92,16 +92,28 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         setupHierarchy()
         setupLayout()
-        networkWeatherManager.fetchURL(forCity: "London")
+        networkWeatherManager.onComplition = { [weak self] currentWeather in
+            guard let self = self else { return  }
+            self.updateInterfaceWith(weather: currentWeather)
+        }
+        networkWeatherManager.fetchURL(forCity: "London") 
     }
 
     @objc
     func tapButton() {
-        self.presentSearchAlertController(withTitle: "Enter city name", massege: nil, style: .alert) { cityName in
+        self.presentSearchAlertController(withTitle: "Enter city name", massege: nil, style: .alert) { [unowned self] cityName in
             self.networkWeatherManager.fetchURL(forCity: cityName)
         }
     }
 
+    func updateInterfaceWith(weather: CurrentWeather) {
+        DispatchQueue.main.async {
+            self.cityLable.text = weather.cityName
+            self.temperatureLable.text = "\(weather.temperatureString)℃"
+            self.feelsTemperatureLable.text = "Feel's like \(weather.feelsLikeTemperatureString)"
+            self.weatherIconImageView.image = UIImage(systemName: weather.systemIconNameString)
+        }
+    }
 }
 
 
@@ -123,16 +135,19 @@ extension ViewController {
             weatherIconImageView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 150),
 
 
-            temperatureLable.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 150),
+            temperatureLable.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 110),
             temperatureLable.heightAnchor.constraint(equalTo: stackView.heightAnchor, constant: -200),
             temperatureLable.widthAnchor.constraint(equalTo: stackView.widthAnchor),
 
-            feelsTemperatureLable.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 150),
+            feelsTemperatureLable.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 110),
             feelsTemperatureLable.heightAnchor.constraint(equalTo: stackView.heightAnchor, constant: -120),
             feelsTemperatureLable.widthAnchor.constraint(equalTo: stackView.widthAnchor),
 
             searchButton.centerXAnchor.constraint(equalTo: stackView.centerXAnchor, constant: 100),
-            searchButton.centerYAnchor.constraint(equalTo: stackView.centerYAnchor, constant: 250)
+            searchButton.centerYAnchor.constraint(equalTo: stackView.centerYAnchor, constant: 250),
+
+            cityLable.centerXAnchor.constraint(equalTo: stackView.centerXAnchor, constant: 0),
+            cityLable.centerYAnchor.constraint(equalTo: stackView.centerYAnchor, constant: 250)
 
 
         ])
